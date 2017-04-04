@@ -44,6 +44,21 @@ public class RecipeController {
 
     }
 
+    @RequestMapping(value = "/update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity update(@RequestBody Recipe newRecipe, @RequestParam(value = "id") long id ) {
+        Recipe recipe = recipeRepository.findOne(id);
+        if (recipe != null) {
+            recipeRepository.delete(id);
+            Recipe updatedRecipe = newRecipe;
+            updatedRecipe.SetId(recipe.getId());
+
+            Recipe aRecipe = recipeRepository.save(updatedRecipe);
+            return new ResponseEntity(aRecipe, HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     public ResponseEntity delete(@RequestParam(value = "id") long id) {
 
