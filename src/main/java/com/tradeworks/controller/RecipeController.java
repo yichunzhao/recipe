@@ -31,17 +31,29 @@ public class RecipeController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Recipe> create(@RequestBody Recipe recipe) {
-        for(Ingredient ingredient :  recipe.getIngredients()){
+        for (Ingredient ingredient : recipe.getIngredients()) {
             ingredient.setRecipe(recipe);
         }
-        
-        for(Step step: recipe.getInstructions()){
+
+        for (Step step : recipe.getInstructions()) {
             step.setRecipe(recipe);
         }
-        
+
         Recipe savedRecipe = recipeRepository.save(recipe);
-        return new ResponseEntity<>(savedRecipe,HttpStatus.CREATED); 
-        
+        return new ResponseEntity<>(savedRecipe, HttpStatus.CREATED);
+
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+    public ResponseEntity delete(@RequestParam(value = "id") long id) {
+
+        Recipe recipe = recipeRepository.findOne(id);
+        if (recipe != null) {
+            recipeRepository.delete(recipe);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
     }
 
     @RequestMapping(value = "/read", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -49,16 +61,9 @@ public class RecipeController {
         return recipeRepository.findOne(id);
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-    public void delete(@RequestBody Recipe recipe) {
-        recipeRepository.delete(recipe);
-    }
-    
-    @RequestMapping(value="/greeting")
-    public String greeting(){
+    @RequestMapping(value = "/greeting")
+    public String greeting() {
         return "hi!";
     }
-    
-    
-    
+
 }
