@@ -6,6 +6,8 @@
 package com.tradeworks.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,14 +41,16 @@ public class Recipe implements Serializable {
     private String title;
 
     @Lob
-    @Basic(fetch = FetchType.LAZY, optional = false)
-    @Column(name = "PHOTO")
+    @Basic(fetch = FetchType.LAZY, optional = true)
+    @Column(name = "PHOTO", nullable = true)
     private byte[] photo;
 
-    @OneToMany(mappedBy = "recipe", orphanRemoval = true,cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "recipe", orphanRemoval = true, cascade = CascadeType.PERSIST)
+    @JsonIgnoreProperties( value = "recipe" ,allowSetters = true)
     private List<Ingredient> ingredients;
 
-    @OneToMany(mappedBy = "recipe", orphanRemoval = true,cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "recipe", orphanRemoval = true, cascade = CascadeType.PERSIST)
+    @JsonIgnoreProperties( value = "recipe" ,allowSetters = true)
     private List<Step> instructions;
 
     public Recipe() {

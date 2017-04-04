@@ -6,6 +6,7 @@
 package com.tradeworks.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,8 +38,9 @@ public class Ingredient implements Serializable {
     private String description;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "RECIPE_ID_PK", referencedColumnName = "RECIPE_ID_PK")
-    @JsonIgnore
+    @JoinColumn(name = "RECIPE_ID_FK", referencedColumnName = "RECIPE_ID_PK", nullable = false)
+    //@JsonIgnore
+    //@JsonIgnoreProperties( value = "ingredients" ,allowSetters = true)
     protected Recipe recipe;
 
     public Ingredient() {
@@ -71,8 +73,7 @@ public class Ingredient implements Serializable {
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
     }
-    
-    
+
     @Override
     public String toString() {
         return "Amount: " + this.amount + " DESCRIPTION: " + this.description;

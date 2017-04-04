@@ -6,6 +6,7 @@
 package com.tradeworks.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,12 +16,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  *
  * @author YNZ
  */
 @Entity
+@Table(name = "STEP")
 public class Step implements Serializable {
 
     @Id
@@ -36,15 +39,16 @@ public class Step implements Serializable {
     private String description;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "RECIPE_ID_PK", referencedColumnName = "RECIPE_ID_PK")
-    @JsonIgnore
+    @JoinColumn(name = "RECIPE_ID_FK", referencedColumnName = "RECIPE_ID_PK", nullable = false)
+    //@JsonIgnore
+    //@JsonIgnoreProperties( value = "instructions" ,allowSetters = true)
     protected Recipe recipe;
 
     public Step() {
     }
-    
-    public long getId(){
-        return id; 
+
+    public long getId() {
+        return id;
     }
 
     public String getNumber() {

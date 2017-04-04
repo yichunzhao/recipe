@@ -30,7 +30,7 @@ public class DbInit implements CommandLineRunner{
         
         Recipe recipe = new Recipe();
         recipe.setTitle("bread");
-        recipe.setPhoto("a phone".getBytes());
+        //recipe.setPhoto("a phone".getBytes());
         
         List<Ingredient> ingredients = new ArrayList<>();
         Ingredient ingredient1 = new Ingredient();
